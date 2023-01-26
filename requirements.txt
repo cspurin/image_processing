@@ -1,0 +1,9 @@
+scikit-learn
+skimage
+napari
+jupyter
+Pillow
+ipywidgets
+scikit-image
+matplotlib
+einops
