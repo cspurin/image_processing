@@ -1,5 +1,23 @@
 import numpy as np
 import einops
+import os 
+import PIL
+from PIL import Image, ImageDraw 
+
+#loading images
+def load(dirname, start_slice, slices): 
+    flow_data = []
+
+    fname = (os.listdir(dirname))
+    for i in range(start_slice, start_slice + slices):
+        im = Image.open(os.path.join(dirname, fname[i]))
+        imarray = np.array(im)
+        flow_data.append(imarray)
+
+    # convert to a 3D array and normalise so data is between 0 and 1 
+    flow_data  = np.asarray(flow_data) 
+    flow_data  = preprocess(flow_data)
+    return(flow_data)
 
 
 def preprocess(img: np.ndarray, normalize_axis=None) -> np.ndarray:
@@ -33,6 +51,26 @@ def preprocess(img: np.ndarray, normalize_axis=None) -> np.ndarray:
     return img
 
 
+# function to mask with the dry scan 
+def mask_with_dry(img, dry_scan):
+    if img.max() > 1:
+        img = (img - img.min()) / (img.max() - img.min()) * 255
+        img = img.astype(np.uint8)
+
+    # creating mask from segmented dry scan
+    mask = (dry_scan == 0)
+
+    assert img.shape == mask.shape
+    assert mask.dtype == np.bool8
+    # mask image 
+    foreground = img.copy()
+    foreground[mask] = 255 
+
+    # create a composite image using the alpha layer
+    masked_img = np.array(foreground, dtype=np.uint8)
+    return masked_img 
+
+
 def sanity_check(img: np.ndarray, mask: np.ndarray, alpha: float = 0.3) -> np.ndarray:
     assert isinstance(mask, np.ndarray)
     assert mask.dtype == np.bool8
@@ -57,3 +95,7 @@ def sanity_check(img: np.ndarray, mask: np.ndarray, alpha: float = 0.3) -> np.nd
     assert len(composite.shape) == 3  # rgb
 
     return composite
+
+
+def simple_thresholding(img: np.array, min_threshold: float, max_threshold: float) -> np.array:
+    return ((img.max() - img.min()) * min_threshold + img.min() <= img) & (img <= (img.max() - img.min()) * max_threshold + img.min())
