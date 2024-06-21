@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this work in your research, please cite it as follows."
+authors:
+  - family-names: "Catherine"
+    given-names: "Spurin"
+  - family-names: "Ellman"
+    given-names: "Sharon"
+  - family-names: "Sherburn"
+    given-names: "Dane"
+  - family-names: "Bultreys"
+    given-names: "Tom"
+  - family-names: "Tchelepi"
+    given-names: "Hamdi"
+title: "Python workflow for segmenting multiphase flow in porous rocks"
+version: 1.0.0
+date-released: 2024-03-30
+url: "https://github.com/cspurin/image_processing"
