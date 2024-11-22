@@ -16,6 +16,6 @@ Recommended steps for running the notebook.
 7. Install the necessary packages by typing this in the terminal:
    pip install -r requirements.txt
    NB must be in the folder where the requirements.txt file is. Alternatively, you can install the packages individually e.g. pip install numpy.
-   Now open the notebook (wavelet_plotting_GRL_paper.ipynb) and begin!
+   Now open the notebook and begin!
 
 
